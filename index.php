@@ -8,7 +8,7 @@
     <dt>パスワード<span class="required">必須</span></dt>
     <dd><input type="text" name="password" size="10" maxlength="20" /></dd>
     <dt> 写真など</dt>
-    <dd><input type="text" name="image" size="35" /></dd>
+    <dd><input type="file" name="image" size="35" /></dd>
 </dl>
 <div><input type="submit" value="入力内容を確認する" /></div>
 </form>
