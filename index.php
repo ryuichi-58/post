@@ -26,11 +26,26 @@ if(!empty($_POST)) {
 <form action="" method="post" enctype="multipart/form-data">
 <dl>
     <dt>ニックネーム<span class="required">必須</span></dt>
-    <dd><input type="text" name="name" size="35" maxlength="255" /></dd>
+    <dd><input type="text" name="name" size="35" maxlength="255" value="<?php echo htmlspecialchars($_POST['name'], ENT_QUOTES); ?>"/>
+        <?php if ($error['name'] == 'blank'): ?>
+        <p class="error">※ニックネームを正しく入力して下さい</p>
+        <?php endif; ?>
+    </dd>
     <dt>メールアドレス<span class="required">必須</span></dt>
-    <dd><input type="text" name="email" size="35" maxlength="255" /></dd>
+    <dd><input type="text" name="email" size="35" maxlength="255" value="<?php echo htmlspecialchars($_POST['email'], ENT_QUOTES); ?>"/>
+        <?php if ($error['email'] == 'blank'): ?>
+        <p class="error">※メールアドレスを正しく入力して下さい</p>
+        <?php endif; ?>
+    </dd>
     <dt>パスワード<span class="required">必須</span></dt>
-    <dd><input type="text" name="password" size="10" maxlength="20" /></dd>
+    <dd><input type="text" name="password" size="10" maxlength="20" value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES); ?>"/>
+        <?php if ($error['password'] == 'blank'): ?>
+        <p class="error">※パスワードを正しく入力して下さい</p>
+        <?php endif; ?>
+        <?php if ($error['password'] == 'length'): ?>
+        <p class="error">※パスワードを4文字以上で入力して下さい</p>
+        <?php endif; ?>
+    </dd>
     <dt> 写真など</dt>
     <dd><input type="file" name="image" size="35" /></dd>
 </dl>
