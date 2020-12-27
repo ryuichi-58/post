@@ -1,4 +1,6 @@
 <?php
+require('../dbconnect.php');
+
 session_start();
 
 if(!empty($_POST)) {
@@ -20,6 +22,15 @@ if(!empty($_POST)) {
         $ext = substr($fileName, -3);
         if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif') {
             $error['image'] = 'type';
+        }
+    }
+    // 重複アカウントのチェック
+    if (empty($error)) {
+        $member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=?');
+        $member->execute(array($_POST['email']));
+        $record = $member->fetch();
+        if ($record['cnt'] > 0) {
+            $error['email'] = 'duplicate';
         }
     }
     if (empty($error)) {
@@ -52,13 +63,16 @@ if ($_REQUEST['action'] == 'rewrite') {
     <dt>メールアドレス<span class="required">必須</span></dt>
     <dd><input type="text" name="email" size="30" maxlength="255" value="<?php echo htmlspecialchars($_POST['email'], ENT_QUOTES); ?>"/>
         <?php if ($error['email'] == 'blank'): ?>
-        <p class="error">※メールアドレスを正しく入力して下さい</p>
+        <p class="error">※メールアドレスを入力して下さい</p>
+        <?php endif; ?>
+        <?php if ($error['email'] == 'duplicate'): ?>
+        <p class="error">※指定されたメールアドレスはすでに登録されています</p>
         <?php endif; ?>
     </dd>
     <dt>パスワード<span class="required">必須</span></dt>
     <dd><input type="text" name="password" size="30" maxlength="20" value="<?php echo htmlspecialchars($_POST['password'], ENT_QUOTES); ?>"/>
         <?php if ($error['password'] == 'blank'): ?>
-        <p class="error">※パスワードを正しく入力して下さい</p>
+        <p class="error">※パスワードを入力して下さい</p>
         <?php endif; ?>
         <?php if ($error['password'] == 'length'): ?>
         <p class="error">※パスワードを4文字以上で入力して下さい</p>
